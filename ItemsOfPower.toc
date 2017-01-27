@@ -1,0 +1,46 @@
+## Interface: 11200
+## Title: ItemsOfPower |cff7fff7f -Ace2-|r
+## Notes: Flexible itempower calculation based on multiple sets of stat values and formulas.
+## Author: Roadblock for Vanilla, Credits Thexod
+## Version: 1.0
+
+## OptionalDeps: Ace2, Babble-Class-2.2, DewdropLib, TabletLib, GratuityLib, Deformat, ItemBonusLib, FuBarPlugin-2.0
+## X-Embeds: Ace2, Babble-Class-2.2, DewdropLib, TabletLib, GratuityLib, Deformat, ItemBonusLib, FuBarPlugin-2.0
+## X-Category: Inventory
+
+## SavedVariables: ItemsOfPowerDB
+## SavedVariablesPerCharacter: ItemsOfPowerDBPerChar
+
+# Libraries
+Libs\compat.lua
+Libs\AceLibrary\AceLibrary.lua
+Libs\AceOO-2.0\AceOO-2.0.lua
+Libs\AceComm-2.0\AceComm-2.0.lua
+Libs\AceEvent-2.0\AceEvent-2.0.lua
+Libs\AceDebug-2.0\AceDebug-2.0.lua
+Libs\AceDB-2.0\AceDB-2.0.lua
+Libs\AceConsole-2.0\AceConsole-2.0.lua
+Libs\AceAddon-2.0\AceAddon-2.0.lua
+Libs\AceLocale-2.2\AceLocale-2.2.lua
+Libs\AceModuleCore-2.0\AceModuleCore-2.0.lua
+Libs\AceHook-2.1\AceHook-2.1.lua
+
+Libs\Babble-Class-2.2\Babble-Class-2.2.lua
+Libs\Dewdrop-2.0\Dewdrop-2.0.lua
+Libs\Tablet-2.0\Tablet-2.0.lua
+Libs\Deformat-2.0\Deformat-2.0.lua
+Libs\FuBarPlugin-2.0\FuBarPlugin-2.0.lua
+Libs\Gratuity-2.0\Gratuity-2.0.lua
+Libs\ItemBonusLib-1.0\ItemBonusLib-1.0.lua
+
+# Locales
+Locale\ItemsOfPower-enGB.lua
+Locale\ItemsOfPower-deDE.lua
+
+# Core
+ItemsOfPower.lua
+StatSet.lua
+SetGroup.lua
+ItemFormula.lua
+FullEquipmentFormula.lua
+BestItems.lua
