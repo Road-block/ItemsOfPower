@@ -1,5 +1,5 @@
 ﻿local MAJOR_VERSION = "ItemBonusLib-1.0"
-local MINOR_VERSION = "$Revision: 19759 $"
+local MINOR_VERSION = "$Revision: 19760 $"
 
 if not AceLibrary:IsNewVersion(MAJOR_VERSION, MINOR_VERSION) then return end
 
@@ -794,19 +794,6 @@ do -- localisation of regexp
 				MANAREG 	= "Mana Regeneration",
 				HEALTH 		= "Life Points",
 				MANA 		= "Mana Points",
-				
-				CR_WEAPON = "Weapon rating",
-				CR_DEFENSE = "Defense rating",
-				CR_DODGE = "Dodge rating",
-				CR_PARRY = "Parry rating",
-				CR_BLOCK = "Block rating",
-				CR_HIT = "Hit rating",
-				CR_CRIT = "Critical strike rating",
-				CR_HASTE = "Haste rating",
-				CR_SPELLHIT = "Hit with spell rating",
-				CR_SPELLCRIT = "Critical strike with spell rating",
-				CR_SPELLHASTE = "Spell haste rating",
-				CR_RESILIENCE = "Resilience",
 			},
 
 
@@ -816,6 +803,8 @@ do -- localisation of regexp
 				{ pattern = "Increases the block value of your shield by (%d+)%.", effect = "BLOCKVALUE" },
 				{ pattern = "Increases your chance to dodge an attack by (%d+)%%%.", effect = "DODGE" },
 				{ pattern = "Increases your chance to parry an attack by (%d+)%%%.", effect = "PARRY" },
+				{ pattern = "+(%d+) Armor", effect = "ARMOR"}, -- order matters
+				{ pattern = "(%d+) Armor", effect = "ARMOR"},
 				{ pattern = "Improves your chance to get a critical strike with spells by (%d+)%%%.", effect = "SPELLCRIT" },
 				{ pattern = "Improves your chance to get a critical strike with Holy spells by (%d+)%%%.", effect = "HOLYCRIT" },
 				{ pattern = "Increases the critical effect chance of your Holy spells by (%d+)%%%.", effect = "HOLYCRIT" },
@@ -866,22 +855,6 @@ do -- localisation of regexp
 				{ pattern = "On Healing Touch critical hits%, you regain (%d+)%% of the mana cost of the spell%.", effect = "REFUNDHTCRIT"},
 				{ pattern = "Reduces the mana cost of your Renew spell by (%d+)%%%.", effect = "CHEAPERRENEW"},
 				
-				-- Combat Rating
-				{ pattern = "Increases your hit rating by (%d+)%.", effect = "CR_HIT" },
-				{ pattern = "Increases your critical strike rating by (%d+)%.", effect = "CR_CRIT" },
-				{ pattern = "Increases defense rating by (%d+)%.", effect = "CR_DEFENSE" },
-				{ pattern = "Improves spell critical strike rating by (%d+)%.", effect = "CR_SPELLCRIT" },
-				{ pattern = "Improves your resilience rating by (%d+)%.", effect = "CR_RESILIENCE" },
-				{ pattern = "Improves spell hit rating by (%d+)%.", effect = "CR_SPELLHIT" },
-				{ pattern = "Increases your dodge rating by (%d+)%.", effect = "CR_DODGE" },
-				{ pattern = "Increases your block rating by (%d+)%.", effect = "CR_BLOCK" },
-				{ pattern = "Increases your parry rating by (%d+)%.", effect = "CR_PARRY" },
-				{ pattern = "Increases axe skill rating by (%d+)%.", effect = "CR_WEAPON_AXE" },
-				{ pattern = "Increases dagger skill rating by (%d+)%.", effect = "CR_WEAPON_DAGGER" },
-				{ pattern = "Increases mace skill rating by (%d+)%.", effect = "CR_WEAPON_MACE" },
-				{ pattern = "Increases sword skill rating by (%d+)%.", effect = "CR_WEAPON_SWORD" },
-				{ pattern = "Increases Two-Handed Swords skill rating by (%d+)%.", effect = "CR_WEAPON_SWORD_2H" },
-
 				-- Updated Patterns (in 2.0)
 				{ pattern = "Increases your spell penetration by (%d+)%.", effect = "SPELLPEN" },
 				{ pattern = "Increases attack power by (%d+)%.", effect = "ATTACKPOWER" },
@@ -934,7 +907,6 @@ do -- localisation of regexp
 				["Mana"]				= "MANA",
 				["Armor"]				= "ARMOR",
 				["Reinforced Armor"]	= "ARMOR",
-				["Resilience"]			= "CR_RESILIENCE",
 			},
 
 			PATTERNS_GENERIC_STAGE1 = {
@@ -1024,20 +996,6 @@ do -- localisation of regexp
 				MANAREG 	= "Régeneration Mana",
 				HEALTH 		= "Points de Vie",
 				MANA 		= "Points de Mana",
-
-				CR_WEAPON = "Score d'arme",
-				CR_DEFENSE = "Score de défense",
-				CR_DODGE = "Score d'esquive",
-				CR_PARRY = "Score de parade",
-				CR_BLOCK = "Score de blocage",
-				CR_HIT = "Score de toucher",
-				CR_CRIT = "Score de coups critiques",
-				-- CR_HASTE = "Score de vitesse",
-				CR_SPELLHIT = "Score de toucher avec les sorts",
-				CR_SPELLCRIT = "Score de coups critiques avec les sorts",
-				-- CR_SPELLHASTE = "Score de vitesse avec les sorts",
-				CR_RESILIENCE = "Résilience",
-
 			},
 
 			PATTERNS_PASSIVE = {
@@ -1102,22 +1060,6 @@ do -- localisation of regexp
 				{ pattern = "Réduit de (%d+)%% le coût en mana de vos sorts Toucher guérisseur% Rétablissement% Récupération et Tranquillité%.", effect = "CHEAPERDRUID"},
 				{ pattern = "En cas de réussite critique sur un Toucher guérisseur, vous récupérez (%d+)%% du coût en mana du sort%.", effect = "REFUNDHTCRIT"},
 				{ pattern = "Reduit le coût en mana de votre sort Rénovation de (%d+)%%%.", effect = "CHEAPERRENEW"},
-
-				-- Combat Rating
-				{ pattern = "Augmente votre score de toucher de (%d+)%.", effect = "CR_HIT" },
-				{ pattern = "Augmente votre score de coup critique de (%d+)%.", effect = "CR_CRIT" },
-				{ pattern = "Score de défense augmenté de (%d+)%.", effect = "CR_DEFENSE" },
-				{ pattern = "Augmente le score de coup critique des sorts de (%d+)%.", effect = "CR_SPELLCRIT" },
---~ 				{ pattern = "Improves your resilience rating by (%d+)%.", effect = "CR_RESILIENCE" },
-				{ pattern = "Augmente le score de toucher des sorts de (%d+)%.", effect = "CR_SPELLHIT" },
-				{ pattern = "Augmente votre score d'esquive de (%d+)%.", effect = "CR_DODGE" },
-				{ pattern = "Augmente votre score de blocage de (%d+)%.", effect = "CR_BLOCK" },
-				{ pattern = "Augmente votre score de parade de (%d+)%.", effect = "CR_PARRY" },
---~ 				{ pattern = "Increases axe skill rating by (%d+)%.", effect = "CR_WEAPON_AXE" },
-				{ pattern = "Augmente le score de la compétence Dagues de (%d+)%.", effect = "CR_WEAPON_DAGGER" },
---~ 				{ pattern = "Increases mace skill rating by (%d+)%.", effect = "CR_WEAPON_MACE" },
---~ 				{ pattern = "Increases sword skill rating by (%d+)%.", effect = "CR_WEAPON_SWORD" },
---~ 				{ pattern = "Increases Two-Handed Swords skill rating by (%d+)%.", effect = "CR_WEAPON_SWORD_2H" },
 
 				-- Updated Patterns (in 2.0)
 --~ 				{ pattern = "Increases your spell penetration by (%d+)%.", effect = "SPELLPEN" },
@@ -1256,19 +1198,6 @@ do -- localisation of regexp
 				MANAREG 	= "Manaregeneration",	
 				HEALTH 		= "Lebenspunkte",
 				MANA 		= "Manapunkte",	
-				
-				-- CR_WEAPON = "Weapon rating",
-				-- CR_DEFENSE = "Defense rating",
-				-- CR_DODGE = "Dodge rating",
-				-- CR_PARRY = "Parry rating",
-				-- CR_BLOCK = "Block rating",
-				-- CR_HIT = "Hit rating",
-				-- CR_CRIT = "Critical strike rating",
-				-- CR_HASTE = "Haste rating",
-				-- CR_SPELLHIT = "Hit with spell rating",
-				-- CR_SPELLCRIT = "Critical strike with spell rating",
-				-- CR_SPELLHASTE = "Spell haste rating",
-				-- CR_RESILIENCE = "Resilience",
 			},
 
 			PATTERNS_PASSIVE = {
@@ -1436,19 +1365,6 @@ do -- localisation of regexp
 				MANAREG 	= "마나 회복",
 				HEALTH 		= "생명력",
 				MANA 		= "마나"
-				
-				-- CR_WEAPON = "Weapon rating",
-				-- CR_DEFENSE = "Defense rating",
-				-- CR_DODGE = "Dodge rating",
-				-- CR_PARRY = "Parry rating",
-				-- CR_BLOCK = "Block rating",
-				-- CR_HIT = "Hit rating",
-				-- CR_CRIT = "Critical strike rating",
-				-- CR_HASTE = "Haste rating",
-				-- CR_SPELLHIT = "Hit with spell rating",
-				-- CR_SPELLCRIT = "Critical strike with spell rating",
-				-- CR_SPELLHASTE = "Spell haste rating",
-				-- CR_RESILIENCE = "Resilience",
 			};
 
 

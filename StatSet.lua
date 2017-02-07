@@ -51,7 +51,7 @@ local StatNames = {
 	MANAREG						= L["Mana/5sec"],
 	MANA							= L["Mana"],
 	HEALTHREG					= L["Health/5sec"],
-	ARMOR							= L["Bonus Armor"],
+	ARMOR							= L["Base Armor"],
 }
 
 local StatDesc = {

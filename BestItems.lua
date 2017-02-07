@@ -9,7 +9,7 @@ local Gratuity = AceLibrary("Gratuity-2.0")
 
 local tinsert = table.insert
 
-local class = select(2, UnitClass("player"))
+local class = ItemsOfPower:select(2, UnitClass("player"))
 
 local Slots = {}
 
@@ -164,8 +164,8 @@ function ItemsOfPower:GetBestItems(Slot)
 			if slot1 then i1 = ItemsOfPower:ItemLinkToItemString(GetInventoryItemLink("player", slot1)) end
 			if slot2 then i2 = ItemsOfPower:ItemLinkToItemString(GetInventoryItemLink("player", slot2)) end
 			
-			if i1 then eId = select(3, ItemsOfPower:strsplit(":", i1)) end
-			if i2 and not eId then eId = select(3, ItemsOfPower:strsplit(":", i2)) end
+			if i1 then eId = ItemsOfPower:select(3, ItemsOfPower:strsplit(":", i1)) end
+			if i2 and not eId then eId = ItemsOfPower:select(3, ItemsOfPower:strsplit(":", i2)) end
 			
 			local ItemsTable = ItemsOfPower.tnew()
 			for _, ItemId in pairs(Items) do

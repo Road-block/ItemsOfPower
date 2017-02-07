@@ -7,7 +7,7 @@
 --]]
 
 ItemsOfPower = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceConsole-2.0", "AceHook-2.1", "AceDB-2.0", "AceDebug-2.0", "AceComm-2.0", "FuBarPlugin-2.0")
-ItemsOfPower.revision = tonumber(string.sub("$Revision: 99 $", 12, -3))
+ItemsOfPower.revision = tonumber(string.sub("$Revision: 101 $", 12, -3))
 ItemsOfPower.version = "r" .. ItemsOfPower.revision
 ItemsOfPower.date = string.sub("$Date: 2017-01-22 17:23:20 -0400 (Sun, 22 Jan 2017) $", 8, 17)
 
@@ -29,8 +29,8 @@ do
 		local t = next(list)
 		if t then
 			list[t] = nil
-			for i = 1, select('#', unpack(arg)) do
-				t[i] = select(i, unpack(arg))
+			for i = 1, ItemsOfPower:select('#', unpack(arg)) do
+				t[i] = ItemsOfPower:select(i, unpack(arg))
 			end
 			return t
 		else
@@ -45,8 +45,8 @@ do
 		else
 			t = {}
 		end
-		for i = 1, select('#', unpack(arg)), 2 do
-			t[select(i, unpack(arg))] = select(i+1, unpack(arg))
+		for i = 1, ItemsOfPower:select('#', unpack(arg)), 2 do
+			t[ItemsOfPower:select(i, unpack(arg))] = ItemsOfPower:select(i+1, unpack(arg))
 		end
 		return t
 	end
@@ -647,7 +647,7 @@ end
 --]]
 
 do -- ItemsOfPower:RegisterSet(Set)
-	local validname = function(v) return v and strlen(v) >= 3 end
+	local validname = function(v) return v and strlen(v) >= 3 and not strfind(v,"[%s%.]+") end
 	
 	function ItemsOfPower:RegisterSet(Set)
 		local SetName = Set.Name
@@ -664,8 +664,8 @@ do -- ItemsOfPower:RegisterSet(Set)
 				desc    = L["Renames the Set."],
 				set     = function(v) self:RenameSet(Set, v) end,
 				get     = function() return Set.Name end,
-				usage   = "<New Name>",
-				vaidate = validname
+				usage   = "<New_Name>",
+				validate = validname
 			}
 		end
 		if not Set.Options.args.DisplayInTooltip then
@@ -835,8 +835,8 @@ function ItemsOfPower:RegisterSetType(SetClassName, SetClass)
 			self:RegisterSet(SetClass:new(name))
 			self:ClearCache()
 		end,
-		validate = function(v)
-			return v and type(v) == "string" and strlen(v) > 0
+		validate = function(v) 
+			return v and type(v) == "string" and strlen(v) >= 3 and not strfind(v,"[%s%.]+") 
 		end,
 	}
 	
@@ -991,7 +991,7 @@ do -- ItemsOfPower:Compare(CompMode, ShowBase, ReverseColor, SwapComparison, ...
 	}
 	
 	function ItemsOfPower:Compare(CompMode, ShowBase, ReverseColor, SwapComparison, ...)
-		local b = select(1, unpack(arg))
+		local b = ItemsOfPower:select(1, unpack(arg))
 		
 		local lines = {}
 		
@@ -1000,7 +1000,7 @@ do -- ItemsOfPower:Compare(CompMode, ShowBase, ReverseColor, SwapComparison, ...
 		end
 		
 		local i = 2
-		local v = select(2, unpack(arg))
+		local v = ItemsOfPower:select(2, unpack(arg))
 		while v do
 			if CompModes[CompMode] then
 				table.insert(lines, Color(ReverseColor, b, v))
@@ -1020,7 +1020,7 @@ do -- ItemsOfPower:Compare(CompMode, ShowBase, ReverseColor, SwapComparison, ...
 				table.insert(lines, "|r")
 			end
 			i = i + 1
-			v = select(i, unpack(arg))
+			v = ItemsOfPower:select(i, unpack(arg))
 		end
 		
 		local text = table.concat(lines)
@@ -1053,6 +1053,16 @@ do -- ItemsOfPower:Compare(CompMode, ShowBase, ReverseColor, SwapComparison, ...
     local pattern = string.format("([^%s]+)", sep)
     string.gsub(s, pattern, function(c) fields[table.getn(fields)+1] = c end)
     return unpack(fields)
+	end
+
+	function ItemsOfPower:select(index,...)
+	  assert(tonumber(index) or index=="#","Invalid argument #1 to select(). Usage: select(\"#\"|int,...)")
+	  if index == "#" then return arg.n end
+	  local sub = {}
+	  for i=index,arg.n do
+	    sub[table.getn(sub)+1] = arg[i]
+	  end
+	  return unpack(sub)
 	end
 end
 
@@ -1161,7 +1171,7 @@ do -- ItemsOfPower:GetTooltipText(ItemString)
 		if strfind(ItemString, ":") ~= 5 then return "", "" end
 		BaseItem.ItemString = ItemString
 
-		local ItemEquipLoc = select(8, GetItemInfo(ItemString))
+		local ItemEquipLoc = ItemsOfPower:select(8, GetItemInfo(ItemString))
 
 		local OwnItem = self:IsEquippedItem(ItemString,ItemEquipLoc)
 		
@@ -1318,7 +1328,7 @@ do -- ItemsOfPower:GetInventorySlot(ItemLink)
 	}
 	
 	function ItemsOfPower:GetInventorySlot(ItemLink)
-		local ItemEquipLoc = select(8,GetItemInfo(ItemLink))
+		local ItemEquipLoc = ItemsOfPower:select(8, GetItemInfo(ItemLink))
 		if not ItemEquipLoc then return end
 		
 		local s1, s2 = slot1[ItemEquipLoc], slot2[ItemEquipLoc]
